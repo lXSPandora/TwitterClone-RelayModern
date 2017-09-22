@@ -43,9 +43,18 @@ const ProfilePicture = styled.Image`
   margin-right: 10;
 `;
 
+const ProfilePicturePost = styled.Image`
+  width: 50;
+  height: 50;
+  border-radius: 25;
+  margin-right: 10;
+`;
+
 const PostView = styled.View`
   flex-direction: row;
-  padding: 20px;
+  padding-vertical: 10;
+  padding-right: 20;
+  padding-left: 10;
 `;
 
 const PostColumns = styled.View`
@@ -86,11 +95,17 @@ const Icon = styled.Image`
   height: 40;
 `;
 
+const Separator = styled.View`height: 1;`;
+
 class Feed extends Component {
   static navigationOptions = {
-    header: null,
-    liked: true,
-    likes: 0
+    header: null
+  };
+
+  state = {
+    liked: false,
+    likes: 0,
+    likeImg: require("../../img/heart.png")
   };
 
   Like = () => {
@@ -103,6 +118,9 @@ class Feed extends Component {
       this.setState({
         likes: newLikes
       });
+      this.setState({
+        likeImg: require("../../img/heartFilled.png")
+      });
     } else {
       let newLikes = likes - 1;
       this.setState({
@@ -110,6 +128,9 @@ class Feed extends Component {
       });
       this.setState({
         likes: newLikes
+      });
+      this.setState({
+        likeImg: require("../../img/heart.png")
       });
     }
   };
@@ -122,9 +143,12 @@ class Feed extends Component {
           <HeaderText>Home</HeaderText>
         </Header>
         <ScrollView>
-          <PostView>
+          <PostView style={{ marginBottom: 10, marginTop: 10 }}>
             <PostColumns>
-              <ProfilePicture source={require("../../img/c3po.jpg")} />
+              <ProfilePicturePost
+                style={styles.shadow}
+                source={require("../../img/c3po.jpg")}
+              />
             </PostColumns>
             <PostColumns>
               <PostTitle>
@@ -135,15 +159,133 @@ class Feed extends Component {
                 again
               </PostDescription>
               <IconButton onPress={this.Like}>
-                <Icon
-                  source={
-                    this.state.liked === true ? (
-                      require("../../img/heart.png")
-                    ) : (
-                      require("../../img/heartFilled.png")
-                    )
-                  }
-                />
+                <Icon source={this.state.likeImg} />
+                <Text>{this.state.likes}</Text>
+              </IconButton>
+            </PostColumns>
+          </PostView>
+          <PostView style={{ marginBottom: 10 }}>
+            <PostColumns>
+              <ProfilePicturePost
+                style={styles.shadow}
+                source={require("../../img/c3po.jpg")}
+              />
+            </PostColumns>
+            <PostColumns>
+              <PostTitle>
+                Oh My God <PostUser>@C3PO</PostUser>
+              </PostTitle>
+              <PostDescription>
+                Lets take a look they say! Where we are now lost in the galaxy
+                again
+              </PostDescription>
+              <IconButton onPress={this.Like}>
+                <Icon source={this.state.likeImg} />
+                <Text>{this.state.likes}</Text>
+              </IconButton>
+            </PostColumns>
+          </PostView>
+          <PostView style={{ marginBottom: 10 }}>
+            <PostColumns>
+              <ProfilePicturePost
+                style={styles.shadow}
+                source={require("../../img/c3po.jpg")}
+              />
+            </PostColumns>
+            <PostColumns>
+              <PostTitle>
+                Oh My God <PostUser>@C3PO</PostUser>
+              </PostTitle>
+              <PostDescription>
+                Lets take a look they say! Where we are now lost in the galaxy
+                again
+              </PostDescription>
+              <IconButton onPress={this.Like}>
+                <Icon source={this.state.likeImg} />
+                <Text>{this.state.likes}</Text>
+              </IconButton>
+            </PostColumns>
+          </PostView>
+          <PostView style={{ marginBottom: 10 }}>
+            <PostColumns>
+              <ProfilePicturePost
+                style={styles.shadow}
+                source={require("../../img/c3po.jpg")}
+              />
+            </PostColumns>
+            <PostColumns>
+              <PostTitle>
+                Oh My God <PostUser>@C3PO</PostUser>
+              </PostTitle>
+              <PostDescription>
+                Lets take a look they say! Where we are now lost in the galaxy
+                again
+              </PostDescription>
+              <IconButton onPress={this.Like}>
+                <Icon source={this.state.likeImg} />
+                <Text>{this.state.likes}</Text>
+              </IconButton>
+            </PostColumns>
+          </PostView>
+          <PostView style={{ marginBottom: 10 }}>
+            <PostColumns>
+              <ProfilePicturePost
+                style={styles.shadow}
+                source={require("../../img/c3po.jpg")}
+              />
+            </PostColumns>
+            <PostColumns>
+              <PostTitle>
+                Oh My God <PostUser>@C3PO</PostUser>
+              </PostTitle>
+              <PostDescription>
+                Lets take a look they say! Where we are now lost in the galaxy
+                again
+              </PostDescription>
+              <IconButton onPress={this.Like}>
+                <Icon source={this.state.likeImg} />
+                <Text>{this.state.likes}</Text>
+              </IconButton>
+            </PostColumns>
+          </PostView>
+          <PostView style={{ marginBottom: 10 }}>
+            <PostColumns>
+              <ProfilePicturePost
+                style={styles.shadow}
+                source={require("../../img/c3po.jpg")}
+              />
+            </PostColumns>
+            <PostColumns>
+              <PostTitle>
+                Oh My God <PostUser>@C3PO</PostUser>
+              </PostTitle>
+              <PostDescription>
+                Lets take a look they say! Where we are now lost in the galaxy
+                again
+              </PostDescription>
+              <IconButton onPress={this.Like}>
+                <Icon source={this.state.likeImg} />
+                <Text>{this.state.likes}</Text>
+              </IconButton>
+            </PostColumns>
+          </PostView>
+          <PostView style={{ marginBottom: 10 }}>
+            <PostColumns>
+              <ProfilePicturePost
+                style={styles.shadow}
+                source={require("../../img/c3po.jpg")}
+              />
+            </PostColumns>
+            <PostColumns>
+              <PostTitle>
+                Oh My God <PostUser>@C3PO</PostUser>
+              </PostTitle>
+              <PostDescription>
+                Lets take a look they say! Where we are now lost in the galaxy
+                again
+              </PostDescription>
+              <IconButton onPress={this.Like}>
+                <Icon source={this.state.likeImg} />
                 <Text>{this.state.likes}</Text>
               </IconButton>
             </PostColumns>
@@ -158,11 +300,12 @@ class Feed extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#f9f9f9"
   },
   shadow: {
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: "grey",
+    shadowColor: "#777777",
     shadowOpacity: 1.0
   }
 });
