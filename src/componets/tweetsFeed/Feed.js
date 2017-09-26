@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Animated } from "react-native";
 import styled from "styled-components/native";
 
 const ActionButton = styled.TouchableOpacity`
@@ -95,17 +95,46 @@ const Icon = styled.Image`
   height: 40;
 `;
 
+const ViewAnimated = Animated.createAnimatedComponent(View);
+
 const Separator = styled.View`height: 1;`;
 
 class Feed extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    gesturesEnabled: false
   };
 
   state = {
     liked: false,
     likes: 0,
-    likeImg: require("../../img/heart.png")
+    likeImg: require("../../img/heart.png"),
+    scaleAnimated: new Animated.Value(2)
+  };
+
+  Create = () => {
+    this.props.navigation.navigate("Create");
+  };
+
+  startViewAnimated = () => {
+    const { scaleAnimated, username } = this.state;
+
+    Animated.sequence([
+      Animated.timing(scaleAnimated, {
+        duration: 2000,
+        toValue: 0.1
+      }),
+      Animated.timing(scaleAnimated, {
+        duration: 500,
+        toValue: 500
+      })
+    ]).start(() => {
+      if (username === null) {
+        this.props.navigation.navigate("UserMenu");
+      } else {
+        this.props.navigation.navigate("Feed");
+      }
+    });
   };
 
   Like = () => {
@@ -164,134 +193,8 @@ class Feed extends Component {
               </IconButton>
             </PostColumns>
           </PostView>
-          <PostView style={{ marginBottom: 10 }}>
-            <PostColumns>
-              <ProfilePicturePost
-                style={styles.shadow}
-                source={require("../../img/c3po.jpg")}
-              />
-            </PostColumns>
-            <PostColumns>
-              <PostTitle>
-                Oh My God <PostUser>@C3PO</PostUser>
-              </PostTitle>
-              <PostDescription>
-                Lets take a look they say! Where we are now lost in the galaxy
-                again
-              </PostDescription>
-              <IconButton onPress={this.Like}>
-                <Icon source={this.state.likeImg} />
-                <Text>{this.state.likes}</Text>
-              </IconButton>
-            </PostColumns>
-          </PostView>
-          <PostView style={{ marginBottom: 10 }}>
-            <PostColumns>
-              <ProfilePicturePost
-                style={styles.shadow}
-                source={require("../../img/c3po.jpg")}
-              />
-            </PostColumns>
-            <PostColumns>
-              <PostTitle>
-                Oh My God <PostUser>@C3PO</PostUser>
-              </PostTitle>
-              <PostDescription>
-                Lets take a look they say! Where we are now lost in the galaxy
-                again
-              </PostDescription>
-              <IconButton onPress={this.Like}>
-                <Icon source={this.state.likeImg} />
-                <Text>{this.state.likes}</Text>
-              </IconButton>
-            </PostColumns>
-          </PostView>
-          <PostView style={{ marginBottom: 10 }}>
-            <PostColumns>
-              <ProfilePicturePost
-                style={styles.shadow}
-                source={require("../../img/c3po.jpg")}
-              />
-            </PostColumns>
-            <PostColumns>
-              <PostTitle>
-                Oh My God <PostUser>@C3PO</PostUser>
-              </PostTitle>
-              <PostDescription>
-                Lets take a look they say! Where we are now lost in the galaxy
-                again
-              </PostDescription>
-              <IconButton onPress={this.Like}>
-                <Icon source={this.state.likeImg} />
-                <Text>{this.state.likes}</Text>
-              </IconButton>
-            </PostColumns>
-          </PostView>
-          <PostView style={{ marginBottom: 10 }}>
-            <PostColumns>
-              <ProfilePicturePost
-                style={styles.shadow}
-                source={require("../../img/c3po.jpg")}
-              />
-            </PostColumns>
-            <PostColumns>
-              <PostTitle>
-                Oh My God <PostUser>@C3PO</PostUser>
-              </PostTitle>
-              <PostDescription>
-                Lets take a look they say! Where we are now lost in the galaxy
-                again
-              </PostDescription>
-              <IconButton onPress={this.Like}>
-                <Icon source={this.state.likeImg} />
-                <Text>{this.state.likes}</Text>
-              </IconButton>
-            </PostColumns>
-          </PostView>
-          <PostView style={{ marginBottom: 10 }}>
-            <PostColumns>
-              <ProfilePicturePost
-                style={styles.shadow}
-                source={require("../../img/c3po.jpg")}
-              />
-            </PostColumns>
-            <PostColumns>
-              <PostTitle>
-                Oh My God <PostUser>@C3PO</PostUser>
-              </PostTitle>
-              <PostDescription>
-                Lets take a look they say! Where we are now lost in the galaxy
-                again
-              </PostDescription>
-              <IconButton onPress={this.Like}>
-                <Icon source={this.state.likeImg} />
-                <Text>{this.state.likes}</Text>
-              </IconButton>
-            </PostColumns>
-          </PostView>
-          <PostView style={{ marginBottom: 10 }}>
-            <PostColumns>
-              <ProfilePicturePost
-                style={styles.shadow}
-                source={require("../../img/c3po.jpg")}
-              />
-            </PostColumns>
-            <PostColumns>
-              <PostTitle>
-                Oh My God <PostUser>@C3PO</PostUser>
-              </PostTitle>
-              <PostDescription>
-                Lets take a look they say! Where we are now lost in the galaxy
-                again
-              </PostDescription>
-              <IconButton onPress={this.Like}>
-                <Icon source={this.state.likeImg} />
-                <Text>{this.state.likes}</Text>
-              </IconButton>
-            </PostColumns>
-          </PostView>
         </ScrollView>
-        <ActionButton style={styles.shadow}>
+        <ActionButton onPress={this.Create} style={styles.shadow}>
           <ActionButtonLogo source={require("../../img/compose.png")} />
         </ActionButton>
       </View>

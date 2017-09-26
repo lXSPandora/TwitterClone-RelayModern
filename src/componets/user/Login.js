@@ -1,8 +1,14 @@
 // @flow
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Animated } from "react-native";
 import styled from "styled-components/native";
 import Svg, { Path } from "react-native-svg";
+import BackArrow from "../icons/BackArrow";
+import TwitterIcon from "../icons/TwitterIcon";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { NavigationActions } from "react-navigation";
+
+const ViewAnimated = Animated.createAnimatedComponent(View);
 
 const LogoView = styled.View`
   align-items: center;
@@ -58,51 +64,59 @@ const ForgetPassword = styled.Text`
   margin-horizontal: 10;
   font-weight: 500;
   color: rgb(29, 161, 242);
+  background-color: rgba(0, 0, 0, 0);
 `;
 
 class Login extends Component {
   static navigationOptions = {
     header: null
   };
+
+  state = {
+    scaleAnimated: new Animated.Value(2)
+  };
+
+  startViewAnimated = () => {
+    const { scaleAnimated, username } = this.state;
+
+    Animated.sequence([
+      Animated.timing(scaleAnimated, {
+        duration: 100,
+        toValue: 0.1
+      }),
+      Animated.timing(scaleAnimated, {
+        duration: 300,
+        toValue: 1000
+      })
+    ]).start(() => {
+      // const resetAction = NavigationActions.reset({
+      //   index: 0,
+      //   actions: [NavigationActions.navigate({ routeName: "Feed" })]
+      // });
+      // this.props.navigation.dispatch(resetAction);\
+      this.props.navigation.navigate('Feed')
+    });
+  };
+
+  login = () => {
+    // const { navigate } = this.props.navigation;
+  };
+
   render() {
+    const { scaleAnimated } = this.state;
     return (
-      <View style={styles.container}>
+      <KeyboardAwareScrollView style={styles.container}>
         <BackButtonView>
           <BackButton
             onPress={() => {
               this.props.navigation.goBack();
             }}
           >
-            <Svg
-              style={{
-                width: 20,
-                height: 20,
-                marginVertical: 30,
-                marginHorizontal: 10
-              }}
-              viewBox="0 0 1000 1000"
-              enableBackground="new 0 0 1000 1000"
-            >
-              <Path d="M990 503.4c0 25.9-21 46.9-46.9 46.9H56.9c-25.9 0-46.9-21-46.9-46.9v-4.6c0-25.9 21-46.9 46.9-46.9H943c25.9 0 46.9 21 46.9 46.9v4.6z" />
-              <Path d="M430.9 131.1c18.3 18.3 18.3 48.1 0 66.4L93.1 535.2c-18.3 18.3-48.1 18.3-66.4 0l-2.9-2.9c-18.3-18.3-18.3-48 .1-66.3l337.7-337.7c18.3-18.3 48.1-18.3 66.4 0l2.9 2.8z" />
-              <Path d="M430.9 868.9c18.3-18.3 18.3-48.1 0-66.4L93.1 464.8c-18.3-18.3-48.1-18.3-66.4 0l-2.9 2.9c-18.3 18.3-18.3 48 .1 66.3l337.7 337.7c18.3 18.3 48.1 18.3 66.4 0l2.9-2.8z" />
-            </Svg>
+            <BackArrow size={20} color="black" />
           </BackButton>
         </BackButtonView>
         <LogoView>
-          <Svg
-            style={{
-              width: 45,
-              height: 45,
-              marginTop: 10
-            }}
-            viewBox="0 0 24 24"
-          >
-            <Path
-              fill="rgb(29, 161, 242)"
-              d="M23.643 4.937c-.835.37-1.732.62-2.675.733a4.67 4.67 0 0 0 2.048-2.578 9.3 9.3 0 0 1-2.958 1.13 4.66 4.66 0 0 0-7.938 4.25 13.229 13.229 0 0 1-9.602-4.868c-.4.69-.63 1.49-.63 2.342A4.66 4.66 0 0 0 3.96 9.824a4.647 4.647 0 0 1-2.11-.583v.06a4.66 4.66 0 0 0 3.737 4.568 4.692 4.692 0 0 1-2.104.08 4.661 4.661 0 0 0 4.352 3.234 9.348 9.348 0 0 1-5.786 1.995 9.5 9.5 0 0 1-1.112-.065 13.175 13.175 0 0 0 7.14 2.093c8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602a9.47 9.47 0 0 0 2.323-2.41z"
-            />
-          </Svg>
+          <TwitterIcon size={45} color="rgb(29, 161, 242)" />
           <LogoText>Log in to Twitter</LogoText>
         </LogoView>
         <View style={{ marginTop: 40, flex: 1 }}>
@@ -114,12 +128,25 @@ class Login extends Component {
             placeholder="Password"
             placeholderTextColor="rgb(101, 119, 134)"
           />
-          <LoginButton>
+          <LoginButton onPress={this.startViewAnimated}>
             <LoginButtonText>Log in</LoginButtonText>
+            <ViewAnimated
+              style={{
+                width: 1,
+                height: 1,
+                borderRadius: 100,
+                backgroundColor: "rgb(29, 161, 242);",
+                transform: [
+                  {
+                    scale: scaleAnimated
+                  }
+                ]
+              }}
+            />
           </LoginButton>
           <ForgetPassword>Forgot my Password</ForgetPassword>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

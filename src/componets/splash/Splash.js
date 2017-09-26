@@ -60,7 +60,7 @@ class Login extends Component {
         toValue: 0.1
       }),
       Animated.timing(scaleAnimated, {
-        duration: 1000,
+        duration: 500,
         toValue: 500
       })
     ]).start(() => {
@@ -79,8 +79,8 @@ class Login extends Component {
       <Wrapper>
         <Svg
           style={{
-            width: 100,
-            height: 100,
+            width: 70,
+            height: 70,
             alignItems: "center",
             justifyContent: "center"
           }}
@@ -92,8 +92,8 @@ class Login extends Component {
           />
           <ViewAnimated
             style={{
-              width: 10,
-              height: 10,
+              width: 2,
+              height: 2,
               borderRadius: 40,
               backgroundColor: "white",
               justifyContent: "center",
