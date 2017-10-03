@@ -1,10 +1,10 @@
 import { StackNavigator } from "react-navigation";
-import Feed from "../componets/tweetsFeed/Feed";
-import UserMenu from "../componets/user/UserMenu";
-import Login from "../componets/user/Login";
-import SignUp from "../componets/user/SignUp";
-import Splash from "../componets/splash/Splash";
-import Create from "../componets/tweetsCreate/Create";
+import Feed from "../components/tweetsFeed/Feed";
+import UserMenu from "../components/user/UserMenu";
+import Login from "../components/user/Login";
+import SignUp from "../components/user/SignUp";
+import Splash from "../components/splash/Splash";
+import Create from "../components/tweetsCreate/Create";
 
 export const Router = StackNavigator(
   {
@@ -28,7 +28,6 @@ export const Router = StackNavigator(
     }
   },
   {
-    mode: "modal",
     initialRouteName: "Splash"
   }
 );
