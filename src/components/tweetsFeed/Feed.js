@@ -97,7 +97,9 @@ const Icon = styled.Image`
 
 const ViewAnimated = Animated.createAnimatedComponent(View);
 
-const Separator = styled.View`height: 1;`;
+const Separator = styled.View`
+  height: 1;
+`;
 
 class Feed extends Component {
   static navigationOptions = {
@@ -168,7 +170,7 @@ class Feed extends Component {
     return (
       <View style={styles.container}>
         <Header style={styles.shadow}>
-          <ProfilePicture source={require("../../img/profileEgg.jpg")} />
+          <ProfilePicture source={require("../../img/profileEgg.png")} />
           <HeaderText>Home</HeaderText>
         </Header>
         <ScrollView>
@@ -176,7 +178,7 @@ class Feed extends Component {
             <PostColumns>
               <ProfilePicturePost
                 style={styles.shadow}
-                source={require("../../img/c3po.jpg")}
+                source={require("../../img/c3po.png")}
               />
             </PostColumns>
             <PostColumns>

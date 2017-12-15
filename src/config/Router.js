@@ -28,6 +28,7 @@ export const Router = StackNavigator(
     }
   },
   {
-    initialRouteName: "Splash"
+    initialRouteName: "Splash",
+    mode: "modal"
   }
 );

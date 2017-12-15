@@ -88,7 +88,7 @@ class Create extends Component {
             />
           </CloseButton>
           <View>
-            <ProfilePicture source={require("../../img/profileEgg.jpg")} />
+            <ProfilePicture source={require("../../img/profileEgg.png")} />
           </View>
         </Header>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
