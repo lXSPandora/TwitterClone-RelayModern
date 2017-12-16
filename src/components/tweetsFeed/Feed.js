@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, ScrollView, Animated } from "react-native";
 import styled from "styled-components/native";
+import PostCard from "../common/PostCard";
 
 const ActionButton = styled.TouchableOpacity`
   background-color: rgb(28, 156, 235);
@@ -101,6 +102,33 @@ const Separator = styled.View`
   height: 1;
 `;
 
+const data = [
+  {
+    user: "C3P0",
+    description:
+      'When your PR start growing up and when you look to that you stop and think - "I Created a Monsteeer!!"',
+    title: "Monster PR",
+    likes: 13,
+    image: require("../../img/c3po.png")
+  },
+  {
+    user: "R2D2",
+    description:
+      'Some people like cars, others like cell phones and now you ask me what i like? - "CODEEEE EDITORS!!!"',
+    title: "Code Editors",
+    likes: 90,
+    image: require("../../img/r2d2.png")
+  },
+  {
+    user: "R2D2",
+    description:
+      'BeeYoop BeeDeepBoom Weeop DEEpaEEya: "Please dont run the latest update."',
+    title: "BEEEEEEP",
+    likes: 32,
+    image: require("../../img/r2d2.png")
+  }
+];
+
 class Feed extends Component {
   static navigationOptions = {
     header: null,
@@ -174,7 +202,8 @@ class Feed extends Component {
           <HeaderText>Home</HeaderText>
         </Header>
         <ScrollView>
-          <PostView style={{ marginBottom: 10, marginTop: 10 }}>
+          {/* <PostCard title="Oh My God" user="C3PO" */}
+          {/* <PostView style={{ marginBottom: 10, marginTop: 10 }}>
             <PostColumns>
               <ProfilePicturePost
                 style={styles.shadow}
@@ -194,7 +223,17 @@ class Feed extends Component {
                 <Text>{this.state.likes}</Text>
               </IconButton>
             </PostColumns>
-          </PostView>
+          </PostView> */}
+          {data.map((tweet, i) => (
+            <PostCard
+              user={tweet.user}
+              title={tweet.title}
+              description={tweet.description}
+              likes={tweet.likes}
+              image={tweet.image}
+              key={i}
+            />
+          ))}
         </ScrollView>
         <ActionButton onPress={this.Create} style={styles.shadow}>
           <ActionButtonLogo source={require("../../img/compose.png")} />
