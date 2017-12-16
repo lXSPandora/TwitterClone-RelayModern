@@ -2,7 +2,6 @@
 
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import SparkButton from "react-native-sparkbutton";
 import styled from "styled-components/native";
 
 const ProfilePicturePost = styled.Image`
