@@ -105,8 +105,8 @@ class Login extends Component {
   login = async (email, password) => {
     if (email === null || password === null) {
       Snackbar.show({
-        title: "Favor preencher todos os campos",
-        duration: Snackbar.LENGTH_INDEFINITE,
+        title: "Please fill all the fields",
+        duration: 3000,
         action: {
           title: "OK",
           color: "rgb(0, 148, 255)"
@@ -120,8 +120,8 @@ class Login extends Component {
       //checking if token is null
       if (token == null) {
         Snackbar.show({
-          title: "Usuario não encontrado",
-          duration: Snackbar.LENGTH_INDEFINITE,
+          title: "User not Found! Please Sign Up",
+          duration: 3000,
           action: {
             title: "OK",
             color: "rgb(0, 148, 255)"
@@ -136,7 +136,7 @@ class Login extends Component {
     } catch (err) {
       console.log(err.message);
       Snackbar.show({
-        title: "Ocorreu um erro inesperado",
+        title: "An unexpected error occurred",
         duration: Snackbar.LENGTH_INDEFINITE,
         action: {
           title: "OK",

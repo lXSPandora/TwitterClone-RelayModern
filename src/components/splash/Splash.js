@@ -38,8 +38,9 @@ class Login extends Component {
   };
 
   componentWillMount() {
-    AsyncStorage.getItem("user")
+    AsyncStorage.getItem("token")
       .then(value => {
+        console.log(value);
         this.setState({
           username: value
         });
@@ -64,10 +65,10 @@ class Login extends Component {
         toValue: 500
       })
     ]).start(() => {
-      if (username === null) {
-        this.props.navigation.navigate("UserMenu");
-      } else {
+      if (username !== null) {
         this.props.navigation.navigate("Feed");
+      } else {
+        this.props.navigation.navigate("UserMenu");
       }
     });
   };

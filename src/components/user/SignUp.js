@@ -1,11 +1,19 @@
 // @flow
 import React, { Component } from "react";
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  AsyncStorage
+} from "react-native";
 import styled from "styled-components/native";
 import Svg, { Path } from "react-native-svg";
 import BackArrow from "../icons/BackArrow";
 import TwitterIcon from "../icons/TwitterIcon";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import Snackbar from "react-native-snackbar";
+import commit from "./mutation/RegisterEmailMutation";
 
 const LogoView = styled.View`
   align-items: center;
@@ -56,10 +64,93 @@ const BackButton = styled.TouchableOpacity`
 `;
 
 class Login extends Component {
+  state = {
+    name: null,
+    email: null,
+    password: null,
+    confirmPassword: null
+  };
   static navigationOptions = {
     header: null
   };
+
+  goToFeed = () => {
+    this.props.navigation.navigate("Feed");
+  };
+
+  registerAndProceed = async (name, email, password, confirmPassword) => {
+    if (
+      name === null ||
+      email === null ||
+      password === null ||
+      confirmPassword === "null"
+    ) {
+      Snackbar.show({
+        title: "Please fill all the fields",
+        duration: 3000,
+        action: {
+          title: "OK",
+          color: "rgb(0, 148, 255)"
+        }
+      });
+      return;
+    }
+    if (password !== confirmPassword) {
+      Snackbar.show({
+        title: "The confirm password and password must be equal",
+        duration: 3000,
+        action: {
+          title: "OK",
+          color: "rgb(0, 148, 255)"
+        }
+      });
+      return;
+    }
+
+    const userImage = "https://i.imgur.com/C3YDUHi.png";
+
+    try {
+      const token = await commit(email, name, userImage, password); //stores the token inside the token variable
+
+      if (token == null) {
+        Snackbar.show({
+          title: "Email already in use",
+          duration: 3000,
+          action: {
+            title: "DISMISS",
+            color: "rgb(0, 148, 255)",
+            action: () => this.goToFeed()
+          }
+        });
+        return;
+      }
+
+      await AsyncStorage.setItem("token", token); // Stores the token on the storage
+
+      Snackbar.show({
+        title: "The user has been added",
+        duration: Snackbar.LENGTH_INDEFINITE,
+        action: {
+          title: "MAKE LOGIN",
+          color: "rgb(0, 148, 255)",
+          action: () => this.goToFeed()
+        }
+      });
+    } catch (err) {
+      console.log(err.message);
+      Snackbar.show({
+        title: "An unexpected error occurred",
+        duration: Snackbar.LENGTH_INDEFINITE,
+        action: {
+          title: "OK",
+          color: "rgb(0, 148, 255)"
+        }
+      });
+    }
+  };
+
   render() {
+    const { name, email, password, confirmPassword } = this.state;
     return (
       <KeyboardAwareScrollView style={styles.container}>
         <BackButtonView>
@@ -77,22 +168,36 @@ class Login extends Component {
         </LogoView>
         <View style={{ marginTop: 40, flex: 1 }}>
           <Input
+            value={name}
+            onChangeText={name => this.setState({ name })}
             placeholder="Username"
             placeholderTextColor="rgb(101, 119, 134)"
           />
           <Input
+            value={email}
+            onChangeText={email => this.setState({ email })}
             placeholder="Email"
             placeholderTextColor="rgb(101, 119, 134)"
           />
           <Input
+            value={password}
+            secureTextEntry={true}
+            onChangeText={password => this.setState({ password })}
             placeholder="Password"
             placeholderTextColor="rgb(101, 119, 134)"
           />
           <Input
+            value={confirmPassword}
+            secureTextEntry={true}
+            onChangeText={confirmPassword => this.setState({ confirmPassword })}
             placeholder="Confirm Password"
             placeholderTextColor="rgb(101, 119, 134)"
           />
-          <LoginButton>
+          <LoginButton
+            onPress={() =>
+              this.registerAndProceed(name, email, password, confirmPassword)
+            }
+          >
             <LoginButtonText>Sign up</LoginButtonText>
           </LoginButton>
         </View>
