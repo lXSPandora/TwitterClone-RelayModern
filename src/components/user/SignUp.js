@@ -74,7 +74,8 @@ class Login extends Component {
     header: null
   };
 
-  goToFeed = () => {
+  goToFeed = async token => {
+    await AsyncStorage.setItem("token", token);
     this.props.navigation.navigate("Feed");
   };
 
@@ -125,15 +126,13 @@ class Login extends Component {
         return;
       }
 
-      await AsyncStorage.setItem("token", token); // Stores the token on the storage
-
       Snackbar.show({
-        title: "The user has been added",
+        title: "The user has been added! Want to make the login?",
         duration: Snackbar.LENGTH_INDEFINITE,
         action: {
           title: "MAKE LOGIN",
           color: "rgb(0, 148, 255)",
-          action: () => this.goToFeed()
+          action: () => this.goToFeed(token)
         }
       });
     } catch (err) {

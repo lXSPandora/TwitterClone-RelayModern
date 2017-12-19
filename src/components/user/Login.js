@@ -130,7 +130,7 @@ class Login extends Component {
         return;
       }
 
-      AsyncStorage.setItem("token", token); // Stores the token on the storage
+      await AsyncStorage.setItem("token", token); // Stores the token on the storage
 
       return this.startViewAnimated();
     } catch (err) {
