@@ -1,3 +1,9 @@
 {
-  "presets": ["react-native"]
+  "retainLines": true,
+  "compact": true,
+  "comments": false,
+  "presets": ["react-native", "react-native-stage-0/decorator-support"],
+  "plugins": [["relay", { "schema": "data/schema.json" }]],
+  "sourceMaps": false
 }
+
