@@ -12,7 +12,11 @@ export const Router = StackNavigator(
       screen: Splash
     },
     Feed: {
-      screen: Feed
+      screen: Feed,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false
+      }
     },
     Login: {
       screen: Login
