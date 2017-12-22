@@ -1,8 +1,20 @@
 // @flow
 import React, { Component } from "react";
-import { View, Text, StyleSheet, ScrollView, Animated } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Animated,
+  ActivityIndicator
+} from "react-native";
 import styled from "styled-components/native";
 import PostCard from "../common/PostCard";
+import { QueryRenderer, graphql } from "react-relay";
+import env from "../../config/Enviroment";
+import Snackbar from "react-native-snackbar";
+import { withNavigation } from "react-navigation";
+import hoistStatics from "hoist-non-react-statics";
 
 const ActionButton = styled.TouchableOpacity`
   background-color: rgb(28, 156, 235);
@@ -102,39 +114,8 @@ const Separator = styled.View`
   height: 1;
 `;
 
-const data = [
-  {
-    user: "C3P0",
-    description:
-      'When your PR start growing up and when you look to that you stop and think - "I Created a Monsteeer!!"',
-    title: "Monster PR",
-    likes: 13,
-    image: require("../../img/c3po.png")
-  },
-  {
-    user: "R2D2",
-    description:
-      'Some people like cars, others like cell phones and now you ask me what i like? - "CODEEEE EDITORS!!!"',
-    title: "Code Editors",
-    likes: 90,
-    image: require("../../img/r2d2.png")
-  },
-  {
-    user: "R2D2",
-    description:
-      'BeeYoop BeeDeepBoom Weeop DEEpaEEya: "Please dont run the latest update."',
-    title: "BEEEEEEP",
-    likes: 32,
-    image: require("../../img/r2d2.png")
-  }
-];
-
+@withNavigation
 class Feed extends Component {
-  static navigationOptions = {
-    header: null,
-    gesturesEnabled: false
-  };
-
   state = {
     liked: false,
     likes: 0,
@@ -195,43 +176,23 @@ class Feed extends Component {
   };
 
   render() {
+    const { tweets, me } = this.props;
+    console.log(this.props);
     return (
       <View style={styles.container}>
         <Header style={styles.shadow}>
-          <ProfilePicture source={require("../../img/profileEgg.png")} />
+          <ProfilePicture source={{ uri: me.image }} />
           <HeaderText>Home</HeaderText>
         </Header>
         <ScrollView>
-          {/* <PostCard title="Oh My God" user="C3PO" */}
-          {/* <PostView style={{ marginBottom: 10, marginTop: 10 }}>
-            <PostColumns>
-              <ProfilePicturePost
-                style={styles.shadow}
-                source={require("../../img/c3po.png")}
-              />
-            </PostColumns>
-            <PostColumns>
-              <PostTitle>
-                Oh My God <PostUser>@C3PO</PostUser>
-              </PostTitle>
-              <PostDescription>
-                Lets take a look they say! Where we are now lost in the galaxy
-                again
-              </PostDescription>
-              <IconButton onPress={this.Like}>
-                <Icon source={this.state.likeImg} />
-                <Text>{this.state.likes}</Text>
-              </IconButton>
-            </PostColumns>
-          </PostView> */}
-          {data.map((tweet, i) => (
+          {tweets.edges.map((tweet, i) => (
             <PostCard
-              user={tweet.user}
-              title={tweet.title}
-              description={tweet.description}
-              likes={tweet.likes}
-              image={tweet.image}
-              key={i}
+              user={tweet.node.username}
+              description={tweet.node.text}
+              likes={tweet.node.likes}
+              image={tweet.node.userImage}
+              userLogged={me.name}
+              key={tweet.node.id}
             />
           ))}
         </ScrollView>
@@ -254,4 +215,61 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Feed;
+const query = graphql`
+  query FeedQuery {
+    me {
+      image
+      name
+    }
+    tweets {
+      edges {
+        node {
+          id
+          username
+          userImage
+          text
+          likes
+        }
+      }
+    }
+  }
+`;
+
+const FeedQueryRenderer = () => (
+  <QueryRenderer
+    environment={env}
+    // variables={variables}
+    query={query}
+    render={({ error, props }) => {
+      if (error) {
+        return Snackbar.show({
+          title: "An unexpected error occurred",
+          duration: Snackbar.LENGTH_INDEFINITE,
+          action: {
+            title: "OK",
+            color: "rgb(0, 148, 255)"
+          }
+        });
+      } else if (props) {
+        return <Feed {...props} />;
+      }
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color="rgb(0, 148, 255)"
+          />
+        </View>
+      );
+    }}
+  />
+);
+
+export default hoistStatics(FeedQueryRenderer, Feed);

@@ -1,0 +1,183 @@
+input ChangePasswordInput {
+  oldPassword: String!
+
+  # user new password
+  password: String!
+  clientMutationId: String
+}
+
+type ChangePasswordPayload {
+  error: String
+  me: User
+  clientMutationId: String
+}
+
+input LoginEmailInput {
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type LoginEmailPayload {
+  token: String
+  error: String
+  clientMutationId: String
+}
+
+type Mutation {
+  LoginEmail(input: LoginEmailInput!): LoginEmailPayload
+  RegisterEmail(input: RegisterEmailInput!): RegisterEmailPayload
+  ChangePassword(input: ChangePasswordInput!): ChangePasswordPayload
+  TweetAdd(input: TweetAddInput!): TweetAddPayload
+  TweetEdit(input: TweetEditInput!): TweetEditPayload
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+# The root of all... queries
+type Query {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+  me: User
+  user(id: ID!): User
+  users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
+  tweet(id: ID!): Tweet
+  tweets(after: String, first: Int, before: String, last: Int, search: String): TweetConnection
+}
+
+input RegisterEmailInput {
+  name: String!
+  image: String!
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type RegisterEmailPayload {
+  token: String
+  error: String
+  clientMutationId: String
+}
+
+# Represents Tweet
+type Tweet implements Node {
+  # The ID of an object
+  id: ID!
+
+  # username of the tweet owner
+  username: String
+
+  # userImage of the tweet owner
+  userImage: String
+
+  # tweet body
+  text: String
+
+  # tweet likes
+  likes: [String]
+}
+
+input TweetAddInput {
+  # username of the tweet owner
+  username: String
+
+  # userImage of the tweet owner
+  userImage: String
+
+  # tweet body
+  text: String
+
+  # tweet likes
+  likes: [String]
+  clientMutationId: String
+}
+
+type TweetAddPayload {
+  tweetEdge: TweetEdge
+  error: String
+  clientMutationId: String
+}
+
+# A connection to a list of items.
+type TweetConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [TweetEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type TweetEdge {
+  # The item at the end of the edge
+  node: Tweet
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input TweetEditInput {
+  id: ID!
+  likes: [String]
+  text: String
+  clientMutationId: String
+}
+
+type TweetEditPayload {
+  tweet: Tweet
+  error: String
+  clientMutationId: String
+}
+
+# User data
+type User implements Node {
+  # The ID of an object
+  id: ID!
+  _id: String
+  name: String
+  image: String
+  email: String
+  active: Boolean
+}
+
+# A connection to a list of items.
+type UserConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserEdge]
+  count: Int
+}
+
+# An edge in a connection.
+type UserEdge {
+  # The item at the end of the edge
+  node: User
+
+  # A cursor for use in pagination
+  cursor: String!
+}

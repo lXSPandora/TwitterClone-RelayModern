@@ -30,30 +30,21 @@ const Logo = styled.ImageBackground`
 class Login extends Component {
   state = {
     scaleAnimated: new Animated.Value(2),
-    username: null
+    token: ""
   };
 
   static navigationOptions = {
     header: null
   };
 
-  componentWillMount() {
-    AsyncStorage.getItem("user")
-      .then(value => {
-        this.setState({
-          username: value
-        });
-      })
+  componentDidMount() {
+    AsyncStorage.getItem("token")
+      .then(this.startViewAnimated)
       .done();
   }
 
-  componentDidMount() {
-    this.startViewAnimated();
-  }
-
-  startViewAnimated = () => {
-    const { scaleAnimated, username } = this.state;
-
+  startViewAnimated = value => {
+    const { scaleAnimated } = this.state;
     Animated.sequence([
       Animated.timing(scaleAnimated, {
         duration: 2000,
@@ -64,7 +55,7 @@ class Login extends Component {
         toValue: 500
       })
     ]).start(() => {
-      if (username === null) {
+      if (!value) {
         this.props.navigation.navigate("UserMenu");
       } else {
         this.props.navigation.navigate("Feed");

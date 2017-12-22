@@ -65,7 +65,7 @@ const Icon = styled.Image`
 class PostCard extends Component {
   state = {
     checked: false,
-    likes: 0
+    likes: []
   };
   componentWillMount() {
     this.setState({
@@ -77,26 +77,34 @@ class PostCard extends Component {
     this.setState({
       checked
     });
+    if (likes.indexOf(this.props.userLogged)) {
+      const index = likes.indexOf(this.props.userLogged);
+      const newLikes = likes.splice(index, 1);
+      this.setState({
+        likes: newLikes
+      });
+      return;
+    }
     this.setState({
-      likes: checked ? likes + 1 : likes - 1
+      likes: [...likes, this.props.userLogged]
     });
   };
   render() {
     const { checked } = this.state;
-    const { image, title, user, description, likes } = this.props;
+    const { image, user, description, likes } = this.props;
     return (
       <PostView style={{ marginBottom: 10, marginTop: 10 }}>
         <PostColumns>
           <PictureContainer style={styles.shadow}>
-            <ProfilePicturePost source={image} style={styles.shadow} />
+            <ProfilePicturePost source={{ uri: image }} style={styles.shadow} />
           </PictureContainer>
         </PostColumns>
         <PostColumns>
           <PostTitle>
-            {title} <PostUser>@{user}</PostUser>
+            <PostUser>@{user}</PostUser>
           </PostTitle>
           <PostDescription>{description}</PostDescription>
-          <IconButton onPress={() => this.like(!checked)}>
+          <IconButton>
             <Icon
               source={
                 this.state.checked
@@ -104,7 +112,7 @@ class PostCard extends Component {
                   : require("../../img/heart.png")
               }
             />
-            <Text>{this.state.likes}</Text>
+            <Text>{this.state.likes.length}</Text>
           </IconButton>
         </PostColumns>
       </PostView>

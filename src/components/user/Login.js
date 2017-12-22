@@ -1,12 +1,14 @@
 // @flow
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Animated } from "react-native";
+import { View, Text, StyleSheet, Animated, AsyncStorage } from "react-native";
 import styled from "styled-components/native";
 import Svg, { Path } from "react-native-svg";
 import BackArrow from "../icons/BackArrow";
 import TwitterIcon from "../icons/TwitterIcon";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { NavigationActions } from "react-navigation";
+import commit from "./mutation/LoginEmailMutation";
+import Snackbar from "react-native-snackbar";
 
 const ViewAnimated = Animated.createAnimatedComponent(View);
 
@@ -73,7 +75,9 @@ class Login extends Component {
   };
 
   state = {
-    scaleAnimated: new Animated.Value(2)
+    scaleAnimated: new Animated.Value(2),
+    email: null,
+    password: null
   };
 
   startViewAnimated = () => {
@@ -93,13 +97,53 @@ class Login extends Component {
       //   index: 0,
       //   actions: [NavigationActions.navigate({ routeName: "Feed" })]
       // });
-      // this.props.navigation.dispatch(resetAction);\
-      this.props.navigation.navigate('Feed')
+      // this.props.navigation.dispatch(resetAction);
+      this.props.navigation.navigate("Feed");
     });
   };
 
-  login = () => {
-    // const { navigate } = this.props.navigation;
+  login = async (email, password) => {
+    if (email === null || password === null) {
+      Snackbar.show({
+        title: "Please fill all the fields",
+        duration: 3000,
+        action: {
+          title: "OK",
+          color: "rgb(0, 148, 255)"
+        }
+      });
+      return;
+    }
+    try {
+      const token = await commit(email, password); //stores the token inside the token variable
+
+      //checking if token is null
+      if (token == null) {
+        Snackbar.show({
+          title: "User not Found! Please Sign Up",
+          duration: 3000,
+          action: {
+            title: "OK",
+            color: "rgb(0, 148, 255)"
+          }
+        });
+        return;
+      }
+
+      await AsyncStorage.setItem("token", token); // Stores the token on the storage
+
+      return this.startViewAnimated();
+    } catch (err) {
+      console.log(err.message);
+      Snackbar.show({
+        title: "An unexpected error occurred",
+        duration: Snackbar.LENGTH_INDEFINITE,
+        action: {
+          title: "OK",
+          color: "rgb(0, 148, 255)"
+        }
+      });
+    }
   };
 
   render() {
@@ -121,14 +165,21 @@ class Login extends Component {
         </LogoView>
         <View style={{ marginTop: 40, flex: 1 }}>
           <Input
+            value={this.state.email}
+            onChangeText={email => this.setState({ email })}
             placeholder="Email"
             placeholderTextColor="rgb(101, 119, 134)"
           />
           <Input
+            secureTextEntry={true}
+            value={this.state.password}
+            onChangeText={password => this.setState({ password })}
             placeholder="Password"
             placeholderTextColor="rgb(101, 119, 134)"
           />
-          <LoginButton onPress={this.startViewAnimated}>
+          <LoginButton
+            onPress={() => this.login(this.state.email, this.state.password)}
+          >
             <LoginButtonText>Log in</LoginButtonText>
             <ViewAnimated
               style={{
