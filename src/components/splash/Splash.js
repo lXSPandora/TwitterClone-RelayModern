@@ -1,15 +1,8 @@
 // @flow
-import React, { Component } from "react";
-import {
-  Animated,
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  AsyncStorage
-} from "react-native";
-import styled from "styled-components/native";
-import Svg, { Path } from "react-native-svg";
+import React, { Component } from 'react';
+import { Animated, View, Text, StyleSheet, ImageBackground, AsyncStorage } from 'react-native';
+import styled from 'styled-components/native';
+import Svg, { Path } from 'react-native-svg';
 
 const ViewAnimated = Animated.createAnimatedComponent(View);
 
@@ -30,15 +23,15 @@ const Logo = styled.ImageBackground`
 class Login extends Component {
   state = {
     scaleAnimated: new Animated.Value(2),
-    token: ""
+    token: '',
   };
 
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   componentDidMount() {
-    AsyncStorage.getItem("token")
+    AsyncStorage.getItem('token')
       .then(this.startViewAnimated)
       .done();
   }
@@ -48,17 +41,17 @@ class Login extends Component {
     Animated.sequence([
       Animated.timing(scaleAnimated, {
         duration: 2000,
-        toValue: 0.1
+        toValue: 0.1,
       }),
       Animated.timing(scaleAnimated, {
         duration: 500,
-        toValue: 500
-      })
+        toValue: 500,
+      }),
     ]).start(() => {
       if (!value) {
-        this.props.navigation.navigate("UserMenu");
+        this.props.navigation.navigate('UserMenu');
       } else {
-        this.props.navigation.navigate("Feed");
+        this.props.navigation.navigate('Feed');
       }
     });
   };
@@ -72,8 +65,8 @@ class Login extends Component {
           style={{
             width: 70,
             height: 70,
-            alignItems: "center",
-            justifyContent: "center"
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
           viewBox="0 0 24 24"
         >
@@ -86,14 +79,14 @@ class Login extends Component {
               width: 2,
               height: 2,
               borderRadius: 40,
-              backgroundColor: "white",
-              justifyContent: "center",
-              alignItems: "center",
+              backgroundColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
               transform: [
                 {
-                  scale: scaleAnimated
-                }
-              ]
+                  scale: scaleAnimated,
+                },
+              ],
             }}
           />
         </Svg>
@@ -103,7 +96,7 @@ class Login extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 export default Login;

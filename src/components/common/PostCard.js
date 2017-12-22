@@ -1,8 +1,8 @@
 // @flow
 
-import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import styled from "styled-components/native";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import styled from 'styled-components/native';
 
 const ProfilePicturePost = styled.Image`
   width: 50;
@@ -65,28 +65,28 @@ const Icon = styled.Image`
 class PostCard extends Component {
   state = {
     checked: false,
-    likes: []
+    likes: [],
   };
   componentWillMount() {
     this.setState({
-      likes: this.props.likes
+      likes: this.props.likes,
     });
   }
   like = checked => {
     const { likes } = this.state;
     this.setState({
-      checked
+      checked,
     });
     if (likes.indexOf(this.props.userLogged)) {
       const index = likes.indexOf(this.props.userLogged);
       const newLikes = likes.splice(index, 1);
       this.setState({
-        likes: newLikes
+        likes: newLikes,
       });
       return;
     }
     this.setState({
-      likes: [...likes, this.props.userLogged]
+      likes: [...likes, this.props.userLogged],
     });
   };
   render() {
@@ -105,13 +105,7 @@ class PostCard extends Component {
           </PostTitle>
           <PostDescription>{description}</PostDescription>
           <IconButton>
-            <Icon
-              source={
-                this.state.checked
-                  ? require("../../img/heartFilled.png")
-                  : require("../../img/heart.png")
-              }
-            />
+            <Icon source={this.state.checked ? require('../../img/heartFilled.png') : require('../../img/heart.png')} />
             <Text>{this.state.likes.length}</Text>
           </IconButton>
         </PostColumns>
@@ -123,9 +117,9 @@ class PostCard extends Component {
 const styles = StyleSheet.create({
   shadow: {
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: "darkgrey",
-    shadowOpacity: 0.5
-  }
+    shadowColor: 'darkgrey',
+    shadowOpacity: 0.5,
+  },
 });
 
 export default PostCard;

@@ -1,11 +1,11 @@
 // @flow
-import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
 class BackArrowIcon extends Component {
   static defaultProps = {
-    color: "black"
+    color: 'black',
   };
   render() {
     const { size, color } = this.props;
@@ -15,7 +15,7 @@ class BackArrowIcon extends Component {
           width: size,
           height: size,
           marginVertical: 30,
-          marginHorizontal: 10
+          marginHorizontal: 10,
         }}
         viewBox="0 0 1000 1000"
         enableBackground="new 0 0 1000 1000"
@@ -38,7 +38,7 @@ class BackArrowIcon extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 export default BackArrowIcon;

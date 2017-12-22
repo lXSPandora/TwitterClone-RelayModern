@@ -2,23 +2,23 @@
  * @flow
  */
 
-import { AsyncStorage } from "react-native";
-import { Environment, Network, RecordSource, Store } from "relay-runtime";
+import { AsyncStorage } from 'react-native';
+import { Environment, Network, RecordSource, Store } from 'relay-runtime';
 
 // Define a function that fetches the results of an operation (query/mutation/etc)
 // and returns its results as a Promise:
 const fetchQuery = async (operation, variables, cacheConfig, uploadables) => {
-  return fetch("http://localhost:5000/graphql", {
-    method: "POST",
+  return fetch('http://localhost:5000/graphql', {
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: await AsyncStorage.getItem("token")
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: await AsyncStorage.getItem('token'),
     }, // Add authentication and other headers here
     body: JSON.stringify({
       query: operation.text, // GraphQL text from input
-      variables
-    })
+      variables,
+    }),
   }).then(response => {
     return response.json();
   });
@@ -32,7 +32,7 @@ const store = new Store(source);
 
 const env = new Environment({
   network,
-  store
+  store,
 });
 
 export default env;

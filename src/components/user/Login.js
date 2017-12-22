@@ -1,14 +1,14 @@
 // @flow
-import React, { Component } from "react";
-import { View, Text, StyleSheet, Animated, AsyncStorage } from "react-native";
-import styled from "styled-components/native";
-import Svg, { Path } from "react-native-svg";
-import BackArrow from "../icons/BackArrow";
-import TwitterIcon from "../icons/TwitterIcon";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { NavigationActions } from "react-navigation";
-import commit from "./mutation/LoginEmailMutation";
-import Snackbar from "react-native-snackbar";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Animated, AsyncStorage } from 'react-native';
+import styled from 'styled-components/native';
+import Svg, { Path } from 'react-native-svg';
+import BackArrow from '../icons/BackArrow';
+import TwitterIcon from '../icons/TwitterIcon';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { NavigationActions } from 'react-navigation';
+import commit from './mutation/LoginEmailMutation';
+import Snackbar from 'react-native-snackbar';
 
 const ViewAnimated = Animated.createAnimatedComponent(View);
 
@@ -71,13 +71,13 @@ const ForgetPassword = styled.Text`
 
 class Login extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   state = {
     scaleAnimated: new Animated.Value(2),
     email: null,
-    password: null
+    password: null,
   };
 
   startViewAnimated = () => {
@@ -86,31 +86,31 @@ class Login extends Component {
     Animated.sequence([
       Animated.timing(scaleAnimated, {
         duration: 100,
-        toValue: 0.1
+        toValue: 0.1,
       }),
       Animated.timing(scaleAnimated, {
         duration: 300,
-        toValue: 1000
-      })
+        toValue: 1000,
+      }),
     ]).start(() => {
       // const resetAction = NavigationActions.reset({
       //   index: 0,
       //   actions: [NavigationActions.navigate({ routeName: "Feed" })]
       // });
       // this.props.navigation.dispatch(resetAction);
-      this.props.navigation.navigate("Feed");
+      this.props.navigation.navigate('Feed');
     });
   };
 
   login = async (email, password) => {
     if (email === null || password === null) {
       Snackbar.show({
-        title: "Please fill all the fields",
+        title: 'Please fill all the fields',
         duration: 3000,
         action: {
-          title: "OK",
-          color: "rgb(0, 148, 255)"
-        }
+          title: 'OK',
+          color: 'rgb(0, 148, 255)',
+        },
       });
       return;
     }
@@ -120,28 +120,28 @@ class Login extends Component {
       //checking if token is null
       if (token == null) {
         Snackbar.show({
-          title: "User not Found! Please Sign Up",
+          title: 'User not Found! Please Sign Up',
           duration: 3000,
           action: {
-            title: "OK",
-            color: "rgb(0, 148, 255)"
-          }
+            title: 'OK',
+            color: 'rgb(0, 148, 255)',
+          },
         });
         return;
       }
 
-      await AsyncStorage.setItem("token", token); // Stores the token on the storage
+      await AsyncStorage.setItem('token', token); // Stores the token on the storage
 
       return this.startViewAnimated();
     } catch (err) {
       console.log(err.message);
       Snackbar.show({
-        title: "An unexpected error occurred",
+        title: 'An unexpected error occurred',
         duration: Snackbar.LENGTH_INDEFINITE,
         action: {
-          title: "OK",
-          color: "rgb(0, 148, 255)"
-        }
+          title: 'OK',
+          color: 'rgb(0, 148, 255)',
+        },
       });
     }
   };
@@ -177,21 +177,19 @@ class Login extends Component {
             placeholder="Password"
             placeholderTextColor="rgb(101, 119, 134)"
           />
-          <LoginButton
-            onPress={() => this.login(this.state.email, this.state.password)}
-          >
+          <LoginButton onPress={() => this.login(this.state.email, this.state.password)}>
             <LoginButtonText>Log in</LoginButtonText>
             <ViewAnimated
               style={{
                 width: 1,
                 height: 1,
                 borderRadius: 100,
-                backgroundColor: "rgb(29, 161, 242);",
+                backgroundColor: 'rgb(29, 161, 242);',
                 transform: [
                   {
-                    scale: scaleAnimated
-                  }
-                ]
+                    scale: scaleAnimated,
+                  },
+                ],
               }}
             />
           </LoginButton>
@@ -204,7 +202,7 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
-  }
+    backgroundColor: 'white',
+  },
 });
 export default Login;

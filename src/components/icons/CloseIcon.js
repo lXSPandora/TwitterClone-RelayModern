@@ -1,12 +1,12 @@
 // @flow
-import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
 class CloseIcon extends Component {
   static defaultProps = {
-    color: "black",
-    size: 20
+    color: 'black',
+    size: 20,
   };
   render() {
     const { color, size, style } = this.props;
@@ -15,7 +15,7 @@ class CloseIcon extends Component {
         style={{
           width: size,
           height: size,
-          ...style
+          ...style,
         }}
         viewBox="0 0 1000 1000"
       >
@@ -29,7 +29,7 @@ class CloseIcon extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 export default CloseIcon;

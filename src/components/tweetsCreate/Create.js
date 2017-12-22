@@ -1,14 +1,8 @@
 // @flow
-import React, { Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  KeyboardAvoidingView
-} from "react-native";
-import styled from "styled-components/native";
-import CloseIcon from "../icons/CloseIcon";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Animated, KeyboardAvoidingView } from 'react-native';
+import styled from 'styled-components/native';
+import CloseIcon from '../icons/CloseIcon';
 
 const Header = styled.View`
   flex-direction: row;
@@ -63,7 +57,7 @@ const ViewAnimated = Animated.createAnimatedComponent(View);
 
 class Create extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   goBack = () => {
@@ -71,7 +65,7 @@ class Create extends Component {
   };
 
   Tweet = () => {
-    console.log("apertei esta porra");
+    console.log('apertei esta porra');
   };
 
   render() {
@@ -81,14 +75,14 @@ class Create extends Component {
           <CloseButton onPress={this.goBack}>
             <CloseIcon
               style={{
-                marginRight: 10
+                marginRight: 10,
               }}
               color="rgb(29, 161, 242)"
               size={20}
             />
           </CloseButton>
           <View>
-            <ProfilePicture source={require("../../img/profileEgg.png")} />
+            <ProfilePicture source={require('../../img/profileEgg.png')} />
           </View>
         </Header>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -114,7 +108,7 @@ class Create extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff"
-  }
+    backgroundColor: '#ffffff',
+  },
 });
 export default Create;

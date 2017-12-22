@@ -1,19 +1,13 @@
 // @flow
-import React, { Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  KeyboardAvoidingView,
-  AsyncStorage
-} from "react-native";
-import styled from "styled-components/native";
-import Svg, { Path } from "react-native-svg";
-import BackArrow from "../icons/BackArrow";
-import TwitterIcon from "../icons/TwitterIcon";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import Snackbar from "react-native-snackbar";
-import commit from "./mutation/RegisterEmailMutation";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import styled from 'styled-components/native';
+import Svg, { Path } from 'react-native-svg';
+import BackArrow from '../icons/BackArrow';
+import TwitterIcon from '../icons/TwitterIcon';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import Snackbar from 'react-native-snackbar';
+import commit from './mutation/RegisterEmailMutation';
 
 const LogoView = styled.View`
   align-items: center;
@@ -68,82 +62,77 @@ class Login extends Component {
     name: null,
     email: null,
     password: null,
-    confirmPassword: null
+    confirmPassword: null,
   };
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   goToFeed = async token => {
-    await AsyncStorage.setItem("token", token);
-    this.props.navigation.navigate("Feed");
+    await AsyncStorage.setItem('token', token);
+    this.props.navigation.navigate('Feed');
   };
 
   registerAndProceed = async (name, email, password, confirmPassword) => {
-    if (
-      name === null ||
-      email === null ||
-      password === null ||
-      confirmPassword === "null"
-    ) {
+    if (name === null || email === null || password === null || confirmPassword === 'null') {
       Snackbar.show({
-        title: "Please fill all the fields",
+        title: 'Please fill all the fields',
         duration: 3000,
         action: {
-          title: "OK",
-          color: "rgb(0, 148, 255)"
-        }
+          title: 'OK',
+          color: 'rgb(0, 148, 255)',
+        },
       });
       return;
     }
     if (password !== confirmPassword) {
       Snackbar.show({
-        title: "The confirm password and password must be equal",
+        title: 'The confirm password and password must be equal',
         duration: 3000,
         action: {
-          title: "OK",
-          color: "rgb(0, 148, 255)"
-        }
+          title: 'OK',
+          color: 'rgb(0, 148, 255)',
+        },
       });
       return;
     }
 
-    const userImage = "https://i.imgur.com/C3YDUHi.png";
+    const userImage = 'https://i.imgur.com/C3YDUHi.png';
 
     try {
       const token = await commit(email, name, userImage, password); //stores the token inside the token variable
 
       if (token == null) {
         Snackbar.show({
-          title: "Email already in use",
+          title: 'Email already in use',
           duration: 3000,
           action: {
-            title: "DISMISS",
-            color: "rgb(0, 148, 255)",
-            action: () => this.goToFeed()
-          }
+            title: 'DISMISS',
+            color: 'rgb(0, 148, 255)',
+            action: () => this.goToFeed(),
+          },
         });
         return;
       }
 
       Snackbar.show({
-        title: "The user has been added! Want to make the login?",
+        title: 'The user has been added! Want to make the login?',
         duration: Snackbar.LENGTH_INDEFINITE,
         action: {
-          title: "MAKE LOGIN",
-          color: "rgb(0, 148, 255)",
-          action: () => this.goToFeed(token)
-        }
+          title: 'MAKE LOGIN',
+          color: 'rgb(0, 148, 255)',
+          action: () => this.goToFeed(token),
+        },
       });
     } catch (err) {
       console.log(err.message);
       Snackbar.show({
-        title: "An unexpected error occurred",
+        title: 'An unexpected error occurred',
         duration: Snackbar.LENGTH_INDEFINITE,
         action: {
-          title: "OK",
-          color: "rgb(0, 148, 255)"
-        }
+          title: 'OK',
+          color: 'rgb(0, 148, 255)',
+        },
       });
     }
   };
@@ -192,11 +181,7 @@ class Login extends Component {
             placeholder="Confirm Password"
             placeholderTextColor="rgb(101, 119, 134)"
           />
-          <LoginButton
-            onPress={() =>
-              this.registerAndProceed(name, email, password, confirmPassword)
-            }
-          >
+          <LoginButton onPress={() => this.registerAndProceed(name, email, password, confirmPassword)}>
             <LoginButtonText>Sign up</LoginButtonText>
           </LoginButton>
         </View>
@@ -207,7 +192,7 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
-  }
+    backgroundColor: 'white',
+  },
 });
 export default Login;

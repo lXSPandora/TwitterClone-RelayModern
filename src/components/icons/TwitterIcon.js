@@ -1,13 +1,13 @@
 // @flow
-import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
 class TwitterIcon extends Component {
   static defaultProps = {
     size: 100,
-    color: "black",
-    children: null
+    color: 'black',
+    children: null,
   };
   render() {
     const { size, color, children, style } = this.props;
@@ -16,7 +16,7 @@ class TwitterIcon extends Component {
         style={{
           width: size,
           height: size,
-          ...style
+          ...style,
         }}
         viewBox="0 0 24 24"
       >
@@ -31,7 +31,7 @@ class TwitterIcon extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 export default TwitterIcon;

@@ -1,11 +1,11 @@
 // @flow
-import React, { Component } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import styled from "styled-components/native";
-import Svg, { Path } from "react-native-svg";
-import TwitterIcon from "../icons/TwitterIcon";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import styled from 'styled-components/native';
+import Svg, { Path } from 'react-native-svg';
+import TwitterIcon from '../icons/TwitterIcon';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
 const birdWidth = width + 220;
 
@@ -80,14 +80,14 @@ const ButtonsContainer = styled.View`
 class UserMenu extends Component {
   static navigationOptions = {
     header: null,
-    gesturesEnabled: false
+    gesturesEnabled: false,
   };
   goLogin = () => {
-    this.props.navigation.navigate("Login");
+    this.props.navigation.navigate('Login');
   };
 
   goSignUp = () => {
-    this.props.navigation.navigate("SignUp");
+    this.props.navigation.navigate('SignUp');
   };
 
   render() {
@@ -96,16 +96,14 @@ class UserMenu extends Component {
         <TwitterIcon
           style={{
             marginLeft: -210,
-            marginTop: 10
+            marginTop: 10,
           }}
           size={birdWidth}
           color="#71c9f8"
         />
         <ActionView>
-          <WelcomeText>Welcome to {"\n"}Twitter</WelcomeText>
-          <DescriptionText>
-            See what’s happening in the world right now.
-          </DescriptionText>
+          <WelcomeText>Welcome to {'\n'}Twitter</WelcomeText>
+          <DescriptionText>See what’s happening in the world right now.</DescriptionText>
         </ActionView>
         <ButtonsContainer>
           <SignUpButton onPress={this.goSignUp}>
@@ -121,7 +119,7 @@ class UserMenu extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 export default UserMenu;

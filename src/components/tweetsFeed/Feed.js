@@ -1,20 +1,13 @@
 // @flow
-import React, { Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Animated,
-  ActivityIndicator
-} from "react-native";
-import styled from "styled-components/native";
-import PostCard from "../common/PostCard";
-import { QueryRenderer, graphql } from "react-relay";
-import env from "../../config/Enviroment";
-import Snackbar from "react-native-snackbar";
-import { withNavigation } from "react-navigation";
-import hoistStatics from "hoist-non-react-statics";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, ScrollView, Animated, ActivityIndicator } from 'react-native';
+import styled from 'styled-components/native';
+import PostCard from '../common/PostCard';
+import { QueryRenderer, graphql } from 'react-relay';
+import env from '../../config/Enviroment';
+import Snackbar from 'react-native-snackbar';
+import { withNavigation } from 'react-navigation';
+import hoistStatics from 'hoist-non-react-statics';
 
 const ActionButton = styled.TouchableOpacity`
   background-color: rgb(28, 156, 235);
@@ -119,12 +112,12 @@ class Feed extends Component {
   state = {
     liked: false,
     likes: 0,
-    likeImg: require("../../img/heart.png"),
-    scaleAnimated: new Animated.Value(2)
+    likeImg: require('../../img/heart.png'),
+    scaleAnimated: new Animated.Value(2),
   };
 
   Create = () => {
-    this.props.navigation.navigate("Create");
+    this.props.navigation.navigate('Create');
   };
 
   startViewAnimated = () => {
@@ -133,17 +126,17 @@ class Feed extends Component {
     Animated.sequence([
       Animated.timing(scaleAnimated, {
         duration: 2000,
-        toValue: 0.1
+        toValue: 0.1,
       }),
       Animated.timing(scaleAnimated, {
         duration: 500,
-        toValue: 500
-      })
+        toValue: 500,
+      }),
     ]).start(() => {
       if (username === null) {
-        this.props.navigation.navigate("UserMenu");
+        this.props.navigation.navigate('UserMenu');
       } else {
-        this.props.navigation.navigate("Feed");
+        this.props.navigation.navigate('Feed');
       }
     });
   };
@@ -153,24 +146,24 @@ class Feed extends Component {
     if (liked === false) {
       let newLikes = likes + 1;
       this.setState({
-        liked: true
+        liked: true,
       });
       this.setState({
-        likes: newLikes
+        likes: newLikes,
       });
       this.setState({
-        likeImg: require("../../img/heartFilled.png")
+        likeImg: require('../../img/heartFilled.png'),
       });
     } else {
       let newLikes = likes - 1;
       this.setState({
-        liked: false
+        liked: false,
       });
       this.setState({
-        likes: newLikes
+        likes: newLikes,
       });
       this.setState({
-        likeImg: require("../../img/heart.png")
+        likeImg: require('../../img/heart.png'),
       });
     }
   };
@@ -197,7 +190,7 @@ class Feed extends Component {
           ))}
         </ScrollView>
         <ActionButton onPress={this.Create} style={styles.shadow}>
-          <ActionButtonLogo source={require("../../img/compose.png")} />
+          <ActionButtonLogo source={require('../../img/compose.png')} />
         </ActionButton>
       </View>
     );
@@ -206,13 +199,13 @@ class Feed extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9"
+    backgroundColor: '#f9f9f9',
   },
   shadow: {
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: "#777777",
-    shadowOpacity: 1.0
-  }
+    shadowColor: '#777777',
+    shadowOpacity: 1.0,
+  },
 });
 
 const query = graphql`
@@ -243,12 +236,12 @@ const FeedQueryRenderer = () => (
     render={({ error, props }) => {
       if (error) {
         return Snackbar.show({
-          title: "An unexpected error occurred",
+          title: 'An unexpected error occurred',
           duration: Snackbar.LENGTH_INDEFINITE,
           action: {
-            title: "OK",
-            color: "rgb(0, 148, 255)"
-          }
+            title: 'OK',
+            color: 'rgb(0, 148, 255)',
+          },
         });
       } else if (props) {
         return <Feed {...props} />;
@@ -257,15 +250,11 @@ const FeedQueryRenderer = () => (
         <View
           style={{
             flex: 1,
-            alignItems: "center",
-            justifyContent: "center"
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          <ActivityIndicator
-            animating={true}
-            size="large"
-            color="rgb(0, 148, 255)"
-          />
+          <ActivityIndicator animating={true} size="large" color="rgb(0, 148, 255)" />
         </View>
       );
     }}

@@ -1,5 +1,5 @@
-import { graphql, commitMutation } from "react-relay";
-import env from "../../../config/Enviroment";
+import { graphql, commitMutation } from 'react-relay';
+import env from '../../../config/Enviroment';
 
 const mutation = graphql`
   mutation LoginEmailMutation($input: LoginEmailInput!) {
@@ -13,8 +13,8 @@ const commit = (email, password) => {
   const variables = {
     input: {
       email,
-      password
-    }
+      password,
+    },
   };
   return new Promise((resolve, reject) => {
     commitMutation(env, {
@@ -24,7 +24,7 @@ const commit = (email, password) => {
         console.log(response.LoginEmail.token);
         resolve(response.LoginEmail.token);
       },
-      onError: err => reject(err)
+      onError: err => reject(err),
     });
   });
 };

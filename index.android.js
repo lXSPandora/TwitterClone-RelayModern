@@ -4,8 +4,8 @@
  * @flow
  */
 
-import React, { Component } from "react";
-import { AppRegistry } from "react-native";
-import App from "./src/App";
+import React, { Component } from 'react';
+import { AppRegistry } from 'react-native';
+import App from './src/App';
 
-AppRegistry.registerComponent("ReactNativeRelayModern", () => App);
+AppRegistry.registerComponent('ReactNativeRelayModern', () => App);
