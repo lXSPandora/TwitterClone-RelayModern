@@ -1,12 +1,10 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Animated, AsyncStorage } from 'react-native';
+import { View, StyleSheet, Animated, AsyncStorage } from 'react-native';
 import styled from 'styled-components/native';
-import Svg, { Path } from 'react-native-svg';
 import BackArrow from '../icons/BackArrow';
 import TwitterIcon from '../icons/TwitterIcon';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { NavigationActions } from 'react-navigation';
 import commit from './mutation/LoginEmailMutation';
 import Snackbar from 'react-native-snackbar';
 
@@ -51,13 +49,14 @@ const Input = styled.TextInput`
 `;
 
 const BackButtonView = styled.View`
-  align-items: flex-start;
-  padding: 10px;
+  height: 50;
+  flex-direction: row;
 `;
 
 const BackButton = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  width: 30;
+  margin-left: 5;
 `;
 
 const ForgetPassword = styled.Text`
@@ -81,7 +80,7 @@ class Login extends Component {
   };
 
   startViewAnimated = () => {
-    const { scaleAnimated, username } = this.state;
+    const { scaleAnimated } = this.state;
 
     Animated.sequence([
       Animated.timing(scaleAnimated, {
@@ -93,11 +92,6 @@ class Login extends Component {
         toValue: 1000,
       }),
     ]).start(() => {
-      // const resetAction = NavigationActions.reset({
-      //   index: 0,
-      //   actions: [NavigationActions.navigate({ routeName: "Feed" })]
-      // });
-      // this.props.navigation.dispatch(resetAction);
       this.props.navigation.navigate('Feed');
     });
   };
@@ -149,7 +143,7 @@ class Login extends Component {
   render() {
     const { scaleAnimated } = this.state;
     return (
-      <KeyboardAwareScrollView style={styles.container}>
+      <View style={styles.container}>
         <BackButtonView>
           <BackButton
             onPress={() => {
@@ -159,43 +153,47 @@ class Login extends Component {
             <BackArrow size={20} color="black" />
           </BackButton>
         </BackButtonView>
-        <LogoView>
-          <TwitterIcon size={45} color="rgb(29, 161, 242)" />
-          <LogoText>Log in to Twitter</LogoText>
-        </LogoView>
-        <View style={{ marginTop: 40, flex: 1 }}>
-          <Input
-            value={this.state.email}
-            onChangeText={email => this.setState({ email })}
-            placeholder="Email"
-            placeholderTextColor="rgb(101, 119, 134)"
-          />
-          <Input
-            secureTextEntry={true}
-            value={this.state.password}
-            onChangeText={password => this.setState({ password })}
-            placeholder="Password"
-            placeholderTextColor="rgb(101, 119, 134)"
-          />
-          <LoginButton onPress={() => this.login(this.state.email, this.state.password)}>
-            <LoginButtonText>Log in</LoginButtonText>
-            <ViewAnimated
-              style={{
-                width: 1,
-                height: 1,
-                borderRadius: 100,
-                backgroundColor: 'rgb(29, 161, 242);',
-                transform: [
-                  {
-                    scale: scaleAnimated,
-                  },
-                ],
-              }}
+        <KeyboardAwareScrollView style={styles.container}>
+          <LogoView>
+            <TwitterIcon size={45} color="rgb(29, 161, 242)" />
+            <LogoText>Log in to Twitter</LogoText>
+          </LogoView>
+          <View style={{ marginTop: 40, flex: 1 }}>
+            <Input
+              value={this.state.email}
+              onChangeText={email => this.setState({ email })}
+              placeholder="Email"
+              placeholderTextColor="rgb(101, 119, 134)"
             />
-          </LoginButton>
-          <ForgetPassword>Forgot my Password</ForgetPassword>
-        </View>
-      </KeyboardAwareScrollView>
+            <Input
+              secureTextEntry={true}
+              value={this.state.password}
+              onChangeText={password => this.setState({ password })}
+              placeholder="Password"
+              placeholderTextColor="rgb(101, 119, 134)"
+            />
+            <LoginButton
+              onPress={() => this.login(this.state.email, this.state.password)}
+            >
+              <LoginButtonText>Log in</LoginButtonText>
+              <ViewAnimated
+                style={{
+                  width: 1,
+                  height: 1,
+                  borderRadius: 100,
+                  backgroundColor: 'rgb(29, 161, 242);',
+                  transform: [
+                    {
+                      scale: scaleAnimated,
+                    },
+                  ],
+                }}
+              />
+            </LoginButton>
+            <ForgetPassword>Forgot my Password</ForgetPassword>
+          </View>
+        </KeyboardAwareScrollView>
+      </View>
     );
   }
 }

@@ -17,7 +17,7 @@ const BackgroundView = styled.View`
 const WelcomeText = styled.Text`
   color: #ffffff;
   font-size: 50;
-  font-weight: bold;
+  font-weight: 700;
   margin-top: 30;
   text-align: left;
   margin-left: 10;
@@ -38,23 +38,24 @@ const ActionView = styled.View`
 
 const SignUpButton = styled.TouchableOpacity`
   background-color: #ffffff;
-  padding-horizontal: 50;
+  padding-horizontal: 40;
   padding-vertical: 10;
   align-items: center;
+  margin-horizontal: 10;
   justify-content: center;
-  border-radius: 40;
-  margin-right: 10;
+  border-radius: 45;
 `;
 
 const LoginButton = styled.TouchableOpacity`
   border-style: solid;
   border-width: 1;
   border-color: #ffffff;
-  padding-horizontal: 50;
+  padding-horizontal: 40;
   padding-vertical: 10;
   align-items: center;
   justify-content: center;
   border-radius: 40;
+  margin-horizontal: 10;
 `;
 
 const LoginButtonText = styled.Text`
@@ -73,7 +74,8 @@ const ButtonsContainer = styled.View`
   flex-direction: row;
   justify-content: space-around;
   position: absolute;
-  padding: 12px;
+  left: 0;
+  right: 0;
   bottom: 20;
 `;
 
@@ -103,7 +105,9 @@ class UserMenu extends Component {
         />
         <ActionView>
           <WelcomeText>Welcome to {'\n'}Twitter</WelcomeText>
-          <DescriptionText>See what’s happening in the world right now.</DescriptionText>
+          <DescriptionText>
+            See what’s happening in the world right now.
+          </DescriptionText>
         </ActionView>
         <ButtonsContainer>
           <SignUpButton onPress={this.goSignUp}>
