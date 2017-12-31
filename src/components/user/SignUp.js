@@ -14,6 +14,9 @@ import TwitterIcon from '../icons/TwitterIcon';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import Snackbar from 'react-native-snackbar';
 import commit from './mutation/RegisterEmailMutation';
+import * as firebase from 'firebase';
+import { firebaseConfig } from '../../config/consts';
+import { connect } from 'react-redux';
 
 const LogoView = styled.View`
   align-items: center;
@@ -64,7 +67,49 @@ const BackButton = styled.TouchableOpacity`
   margin-left: 5;
 `;
 
-class Login extends Component {
+const PictureInput = styled.TouchableOpacity`
+  background-color: rgb(245, 248, 250);
+  border-radius: 40;
+  padding-horizontal: 20;
+  padding-vertical: 15;
+  margin-top: 10;
+  margin-left: 5;
+  margin-right: 12;
+  flex: 1;
+`;
+
+const PicturePreview = styled.View`
+  width: 50;
+  height: 50;
+  border-radius: 25;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(245, 248, 250);
+  margin-top: 10;
+  margin-left: 10;
+`;
+
+const ProfilePicture = styled.Image`
+  width: 45;
+  height: 45;
+`;
+
+const CameraIcon = styled.Image`
+  height: 20;
+  width: 20;
+  tint-color: rgb(101, 119, 134);
+`;
+
+const PictureInputText = styled.Text`
+  color: rgb(101, 119, 134);
+`;
+
+const InputContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+class SignUp extends Component {
   state = {
     name: null,
     email: null,
@@ -78,6 +123,10 @@ class Login extends Component {
   goToFeed = async token => {
     await AsyncStorage.setItem('token', token);
     this.props.navigation.navigate('Feed');
+  };
+
+  getPicture = () => {
+    this.props.navigation.navigate('Gallery');
   };
 
   registerAndProceed = async (name, email, password, confirmPassword) => {
@@ -151,6 +200,7 @@ class Login extends Component {
 
   render() {
     const { name, email, password, confirmPassword } = this.state;
+    console.log(this.props);
     return (
       <View style={styles.container}>
         <BackButtonView>
@@ -168,6 +218,14 @@ class Login extends Component {
             <LogoText>Sign up to Twitter</LogoText>
           </LogoView>
           <View style={{ marginTop: 40, flex: 1 }}>
+            <InputContainer>
+              <PicturePreview>
+                <CameraIcon source={require('../../img/camera.png')} />
+              </PicturePreview>
+              <PictureInput onPress={this.getPicture}>
+                <PictureInputText>Select a profile picture</PictureInputText>
+              </PictureInput>
+            </InputContainer>
             <Input
               value={name}
               onChangeText={name => this.setState({ name })}
@@ -215,4 +273,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
 });
-export default Login;
+
+const mapStateToProps = state => ({
+  image: state.image,
+});
+
+export default connect(mapStateToProps, null)(SignUp);
