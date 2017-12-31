@@ -79,9 +79,9 @@ const PictureInput = styled.TouchableOpacity`
 `;
 
 const PicturePreview = styled.View`
-  width: 50;
-  height: 50;
-  border-radius: 25;
+  width: 45;
+  height: 45;
+  border-radius: 22;
   align-items: center;
   justify-content: center;
   background-color: rgb(245, 248, 250);
@@ -92,6 +92,7 @@ const PicturePreview = styled.View`
 const ProfilePicture = styled.Image`
   width: 45;
   height: 45;
+  border-radius: 22;
 `;
 
 const CameraIcon = styled.Image`
@@ -200,7 +201,7 @@ class SignUp extends Component {
 
   render() {
     const { name, email, password, confirmPassword } = this.state;
-    console.log(this.props);
+    const { image } = this.props;
     return (
       <View style={styles.container}>
         <BackButtonView>
@@ -220,7 +221,10 @@ class SignUp extends Component {
           <View style={{ marginTop: 40, flex: 1 }}>
             <InputContainer>
               <PicturePreview>
-                <CameraIcon source={require('../../img/camera.png')} />
+                {image === '' && (
+                  <CameraIcon source={require('../../img/camera.png')} />
+                )}
+                {image !== '' && <ProfilePicture source={{ uri: image }} />}
               </PicturePreview>
               <PictureInput onPress={this.getPicture}>
                 <PictureInputText>Select a profile picture</PictureInputText>
@@ -275,7 +279,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  image: state.image,
+  image: state.appReducers.image,
 });
 
 export default connect(mapStateToProps, null)(SignUp);

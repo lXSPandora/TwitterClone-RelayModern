@@ -1,7 +1,6 @@
-export const imageAdd = (name, uri) => ({
+export const imageAdd = image => ({
   type: 'IMAGE_ADD',
-  name,
-  uri,
+  image,
 });
 
 export const imageRemoveAll = () => ({

@@ -38,7 +38,7 @@ const ActionButton = styled.TouchableOpacity`
 const Title = styled.Text`
   color: black;
   font-size: 22;
-  font-weight: 800;
+  font-weight: bold;
   margin-left: 25;
 `;
 
@@ -54,26 +54,29 @@ class Gallery extends Component {
   };
   state = {
     num: 0,
-    selected: [],
+    image: [],
+    uri: '',
   };
-  getSelectedImages(images, current) {
-    var num = images.length;
+
+  getSelectedImage = (images: Image[]) => {
+    // TODO - handle multiple images
 
     this.setState({
-      num: num,
-      selected: images,
+      image: images,
+      uri: images[0].uri,
     });
+  };
 
-    console.log(current);
-    console.log(this.state.selected);
-  }
+  confirmSelection = async () => {
+    const { uri } = this.state;
 
-  // confirmSelection = async () => {
-  //   const { selected } = this.state;
+    await this.props.imageAdd(uri);
 
-  // };
+    this.props.navigation.goBack();
+  };
 
   render() {
+    console.log(this.state);
     console.log(this.props);
     return (
       <Wrapper>
@@ -84,20 +87,16 @@ class Gallery extends Component {
           <Title>Pick a profile picture</Title>
         </Header>
         <CameraRollPicker
-          scrollRenderAheadDistance={500}
-          initialListSize={1}
-          pageSize={3}
-          removeClippedSubviews={false}
-          groupTypes="SavedPhotos"
-          batchSize={5}
-          maximum={1}
-          selected={this.state.selected}
-          assetType="Photos"
+          callback={this.getSelectedImage}
           imagesPerRow={3}
-          imageMargin={5}
-          callback={this.getSelectedImages.bind(this)}
+          imageMargin={1}
+          maximum={1}
+          selected={this.state.image}
+          emptyText="Carregando imagens"
+          selectSingleItem={true}
         />
         <ActionButton
+          onPress={this.confirmSelection}
           style={{
             shadowColor: 'grey',
             shadowOffset: { width: 1, height: 1 },
@@ -112,7 +111,7 @@ class Gallery extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  imageAdd: (name, uri) => dispatch(imageAdd(name, uri)),
+  imageAdd: uri => dispatch(imageAdd(uri)),
 });
 
 export default connect(null, mapDispatchToProps)(Gallery);

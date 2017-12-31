@@ -1,23 +1,20 @@
 const initialState = {
-  image: {},
+  image: '',
 };
 
 const appReducers = (state = initialState, action) => {
   switch (action.type) {
     case 'IMAGE_ADD': {
-      const { name, uri } = action;
+      const { image } = action;
       return {
         ...state,
-        image: {
-          name,
-          uri,
-        },
+        image,
       };
     }
     case 'IMAGE_REMOVE_ALL': {
       return {
         ...state,
-        image: {},
+        image: '',
       };
     }
     default:
