@@ -5,6 +5,7 @@ import Login from '../components/user/Login';
 import SignUp from '../components/user/SignUp';
 import Splash from '../components/splash/Splash';
 import Create from '../components/tweetsCreate/Create';
+import Gallery from '../components/common/Gallery';
 
 export const Router = StackNavigator(
   {
@@ -30,9 +31,12 @@ export const Router = StackNavigator(
     Create: {
       screen: Create,
     },
+    Gallery: {
+      screen: Gallery,
+    },
   },
   {
     initialRouteName: 'Splash',
     mode: 'modal',
-  },
+  }
 );
