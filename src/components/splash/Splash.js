@@ -1,6 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { Animated, View, Text, StyleSheet, ImageBackground, AsyncStorage } from 'react-native';
+import {
+  Animated,
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  AsyncStorage,
+} from 'react-native';
 import styled from 'styled-components/native';
 import Svg, { Path } from 'react-native-svg';
 
@@ -45,7 +52,7 @@ class Login extends Component {
       }),
       Animated.timing(scaleAnimated, {
         duration: 500,
-        toValue: 500,
+        toValue: 1000,
       }),
     ]).start(() => {
       if (!value) {

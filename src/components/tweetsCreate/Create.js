@@ -1,8 +1,21 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Animated, KeyboardAvoidingView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+} from 'react-native';
 import styled from 'styled-components/native';
 import CloseIcon from '../icons/CloseIcon';
+import { QueryRenderer, graphql } from 'react-relay';
+import env from '../../config/Enviroment';
+import Snackbar from 'react-native-snackbar';
+import hoistStatics from 'hoist-non-react-statics';
+import { withNavigation, NavigationActions } from 'react-navigation';
+import commit from './mutation/TweetAddMutation';
 
 const Header = styled.View`
   flex-direction: row;
@@ -55,9 +68,47 @@ const Footer = styled.View`
 
 const ViewAnimated = Animated.createAnimatedComponent(View);
 
+@withNavigation
 class Create extends Component {
   static navigationOptions = {
     header: null,
+  };
+
+  state = {
+    tweetText: '',
+  };
+
+  showError = () => {
+    Snackbar.show({
+      title: 'Ocorreu um erro inesperado',
+      duration: Snackbar.LENGTH_INDEFINITE,
+      action: {
+        title: 'RETRY',
+        color: 'red',
+        onPress: () => this.Tweet,
+      },
+    });
+  };
+
+  onComplete = () => {
+    this.props.navigation.Snackbar.show({
+      title: 'Hello world',
+      duration: Snackbar.LENGTH_INDEFINITE,
+      action: {
+        title: 'UNDO',
+        color: 'green',
+        onPress: () => {},
+      },
+    });
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Profile',
+
+      params: {},
+
+      action: NavigationActions.navigate({ routeName: 'Feed' }),
+    });
+
+    this.props.navigation.dispatch(navigateAction);
   };
 
   goBack = () => {
@@ -65,10 +116,15 @@ class Create extends Component {
   };
 
   Tweet = () => {
-    console.log('apertei esta porra');
+    const { me } = this.props;
+    const { tweetText } = this.state;
+
+    commit(me.name, me.image, tweetText, [], this.onComplete, this.showError);
   };
 
   render() {
+    const { image } = this.props.me;
+    const { tweetText } = this.state;
     return (
       <View style={styles.container}>
         <Header>
@@ -82,12 +138,14 @@ class Create extends Component {
             />
           </CloseButton>
           <View>
-            <ProfilePicture source={require('../../img/profileEgg.png')} />
+            <ProfilePicture source={{ uri: image }} />
           </View>
         </Header>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
           <View style={{ flex: 1 }}>
             <Textarea
+              value={tweetText}
+              onChangeText={tweetText => this.setState({ tweetText })}
               multiline={true}
               numberOfLines={4}
               placeholder="What is happening?"
@@ -105,10 +163,57 @@ class Create extends Component {
     );
   }
 }
+
+const query = graphql`
+  query CreateQuery {
+    me {
+      image
+      name
+    }
+  }
+`;
+
+const CreateQueryRenderer = () => (
+  <QueryRenderer
+    environment={env}
+    query={query}
+    render={({ error, props }) => {
+      if (error) {
+        return Snackbar.show({
+          title: 'An unexpected error occurred',
+          duration: Snackbar.LENGTH_INDEFINITE,
+          action: {
+            title: 'OK',
+            color: 'rgb(0, 148, 255)',
+          },
+        });
+      } else if (props) {
+        return <Create {...props} />;
+      }
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color="rgb(0, 148, 255)"
+          />
+        </View>
+      );
+    }}
+  />
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
   },
 });
-export default Create;
+
+export default hoistStatics(CreateQueryRenderer, Create);
