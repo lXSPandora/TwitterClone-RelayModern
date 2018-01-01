@@ -1,8 +1,20 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Animated, KeyboardAvoidingView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+} from 'react-native';
 import styled from 'styled-components/native';
 import CloseIcon from '../icons/CloseIcon';
+import { QueryRenderer, graphql } from 'react-relay';
+import env from '../../config/Enviroment';
+import Snackbar from 'react-native-snackbar';
+import hoistStatics from 'hoist-non-react-statics';
+import { withNavigation } from 'react-navigation';
 
 const Header = styled.View`
   flex-direction: row;
@@ -55,6 +67,7 @@ const Footer = styled.View`
 
 const ViewAnimated = Animated.createAnimatedComponent(View);
 
+@withNavigation
 class Create extends Component {
   static navigationOptions = {
     header: null,
@@ -65,10 +78,12 @@ class Create extends Component {
   };
 
   Tweet = () => {
-    console.log('apertei esta porra');
+    console.log(this.props);
   };
 
   render() {
+    console.log(this.props);
+    const { image } = this.props.me;
     return (
       <View style={styles.container}>
         <Header>
@@ -82,7 +97,7 @@ class Create extends Component {
             />
           </CloseButton>
           <View>
-            <ProfilePicture source={require('../../img/profileEgg.png')} />
+            <ProfilePicture source={{ uri: image }} />
           </View>
         </Header>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -105,10 +120,57 @@ class Create extends Component {
     );
   }
 }
+
+const query = graphql`
+  query CreateQuery {
+    me {
+      image
+      name
+    }
+  }
+`;
+
+const CreateQueryRenderer = () => (
+  <QueryRenderer
+    environment={env}
+    query={query}
+    render={({ error, props }) => {
+      if (error) {
+        return Snackbar.show({
+          title: 'An unexpected error occurred',
+          duration: Snackbar.LENGTH_INDEFINITE,
+          action: {
+            title: 'OK',
+            color: 'rgb(0, 148, 255)',
+          },
+        });
+      } else if (props) {
+        return <Create {...props} />;
+      }
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color="rgb(0, 148, 255)"
+          />
+        </View>
+      );
+    }}
+  />
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
   },
 });
-export default Create;
+
+export default hoistStatics(CreateQueryRenderer, Create);
