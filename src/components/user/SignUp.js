@@ -17,6 +17,7 @@ import commit from './mutation/RegisterEmailMutation';
 import * as firebase from 'firebase';
 import { firebaseConfig } from '../../config/consts';
 import { connect } from 'react-redux';
+import { imageRemoveAll } from '../../redux/actions/appActions';
 
 const LogoView = styled.View`
   align-items: center;
@@ -110,7 +111,20 @@ const InputContainer = styled.View`
   align-items: center;
 `;
 
-class SignUp extends Component {
+type Props = {
+  image: string,
+  navigation: any,
+  imageRemoveAll: () => void,
+};
+
+type State = {
+  name: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
+};
+
+class SignUp extends Component<Props, State> {
   state = {
     name: null,
     email: null,
@@ -199,6 +213,10 @@ class SignUp extends Component {
     }
   };
 
+  uploadProfilePicture = (username: string) => {
+    const { image } = this.props;
+  };
+
   render() {
     const { name, email, password, confirmPassword } = this.state;
     const { image } = this.props;
@@ -282,4 +300,8 @@ const mapStateToProps = state => ({
   image: state.appReducers.image,
 });
 
-export default connect(mapStateToProps, null)(SignUp);
+const mapDispatchToProps = dispatch => ({
+  imageRemoveAll: () => dispatch(imageRemoveAll()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
