@@ -14,7 +14,8 @@ import { QueryRenderer, graphql } from 'react-relay';
 import env from '../../config/Enviroment';
 import Snackbar from 'react-native-snackbar';
 import hoistStatics from 'hoist-non-react-statics';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, NavigationActions } from 'react-navigation';
+import commit from './mutation/TweetAddMutation';
 
 const Header = styled.View`
   flex-direction: row;
@@ -73,17 +74,57 @@ class Create extends Component {
     header: null,
   };
 
+  state = {
+    tweetText: '',
+  };
+
+  showError = () => {
+    Snackbar.show({
+      title: 'Ocorreu um erro inesperado',
+      duration: Snackbar.LENGTH_INDEFINITE,
+      action: {
+        title: 'RETRY',
+        color: 'red',
+        onPress: () => this.Tweet,
+      },
+    });
+  };
+
+  onComplete = () => {
+    this.props.navigation.Snackbar.show({
+      title: 'Hello world',
+      duration: Snackbar.LENGTH_INDEFINITE,
+      action: {
+        title: 'UNDO',
+        color: 'green',
+        onPress: () => {},
+      },
+    });
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Profile',
+
+      params: {},
+
+      action: NavigationActions.navigate({ routeName: 'Feed' }),
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+  };
+
   goBack = () => {
     this.props.navigation.goBack();
   };
 
   Tweet = () => {
-    console.log(this.props);
+    const { me } = this.props;
+    const { tweetText } = this.state;
+
+    commit(me.name, me.image, tweetText, [], this.onComplete, this.showError);
   };
 
   render() {
-    console.log(this.props);
     const { image } = this.props.me;
+    const { tweetText } = this.state;
     return (
       <View style={styles.container}>
         <Header>
@@ -103,6 +144,8 @@ class Create extends Component {
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
           <View style={{ flex: 1 }}>
             <Textarea
+              value={tweetText}
+              onChangeText={tweetText => this.setState({ tweetText })}
               multiline={true}
               numberOfLines={4}
               placeholder="What is happening?"
