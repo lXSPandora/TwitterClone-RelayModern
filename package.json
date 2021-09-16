@@ -10,9 +10,9 @@
   "dependencies": {
     "firebase": "^4.8.1",
     "hoist-non-react-statics": "^2.3.1",
-    "lint-staged": "^6.0.0",
+    "lint-staged": "^8.1.1",
     "react": "16.0.0-alpha.12",
-    "react-native": "^0.51.0",
+    "react-native": "^0.60.0",
     "react-native-camera-roll-picker": "^1.2.3",
     "react-native-keyboard-aware-scrollview": "^1.1.7",
     "react-native-progress": "^3.4.0",
